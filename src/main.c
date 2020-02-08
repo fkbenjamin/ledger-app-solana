@@ -17,7 +17,6 @@
 
 #include "utils.h"
 #include "getPubkey.h"
-#include "signMessage.h"
 #include "menu.h"
 
 unsigned char G_io_seproxyhal_spi_buffer[IO_SEPROXYHAL_BUFFER_SIZE_B];
@@ -25,7 +24,6 @@ unsigned char G_io_seproxyhal_spi_buffer[IO_SEPROXYHAL_BUFFER_SIZE_B];
 #define CLA 0xE0
 #define INS_GET_APP_CONFIGURATION 0x01
 #define INS_GET_PUBKEY 0x02
-#define INS_SIGN_MESSAGE 0x03
 
 #define OFFSET_CLA 0
 #define OFFSET_INS 1
@@ -57,10 +55,6 @@ void handleApdu(volatile unsigned int *flags, volatile unsigned int *tx) {
 
                 case INS_GET_PUBKEY:
                     handleGetPubkey(G_io_apdu_buffer[OFFSET_P1], G_io_apdu_buffer[OFFSET_P2], G_io_apdu_buffer + OFFSET_CDATA, G_io_apdu_buffer[OFFSET_LC], flags, tx);
-                    break;
-
-                case INS_SIGN_MESSAGE:
-                    handleSignMessage(G_io_apdu_buffer[OFFSET_P1], G_io_apdu_buffer[OFFSET_P2], G_io_apdu_buffer + OFFSET_CDATA, G_io_apdu_buffer[OFFSET_LC], flags, tx);
                     break;
 
                 default:

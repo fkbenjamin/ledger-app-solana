@@ -3,10 +3,9 @@
 #include "ux.h"
 #include "utils.h"
 
-static uint8_t publicKey[PUBKEY_LENGTH];
-static char publicKeyStr[BASE58_HASH_LENGTH];
+static uint8_t publicKey[FULL_PUBKEY_LENGTH];
 
-int read_derivation_path(const uint8_t *dataBuffer, size_t size, uint32_t *derivationPath) {
+static int read_derivation_path(const uint8_t *dataBuffer, size_t size, uint32_t *derivationPath) {
     size_t len = dataBuffer[0];
     dataBuffer += 1;
     if (len < 0x01 || len > BIP32_PATH) {
@@ -37,7 +36,7 @@ UX_STEP_NOCB(
     bnnn_paging,
     {
       .title = "Pubkey",
-      .text = publicKeyStr,
+      .text = "TODO: pubkey in base58",
     });
 UX_STEP_VALID(
     ux_display_public_flow_6_step,
@@ -63,14 +62,13 @@ UX_FLOW(ux_display_public_flow,
 );
 
 void handleGetPubkey(uint8_t p1, uint8_t p2, uint8_t *dataBuffer, uint16_t dataLength, volatile unsigned int *flags, volatile unsigned int *tx) {
+    UNUSED(dataLength);
     UNUSED(p2);
 
     uint32_t derivationPath[BIP32_PATH];
     int pathLength = read_derivation_path(dataBuffer, dataLength, derivationPath);
 
     getPublicKey(derivationPath, publicKey, pathLength);
-    int len = encodeBase58(publicKey, PUBKEY_LENGTH, (unsigned char *) publicKeyStr, BASE58_HASH_LENGTH);
-    publicKeyStr[len] = '\0';
 
     if (p1 == P1_NON_CONFIRM) {
         *tx = set_result_get_pubkey();

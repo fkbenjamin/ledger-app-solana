@@ -2,8 +2,8 @@
 
 ## Overview
 
-This app is for a Nano S Ledger Wallet. It currently does very little, and just
-exposes a minimal API (`get_pubkey`, `sign_message`).
+This app is for a Nano S/X Ledger Wallet.
+It currently does very little, and just exposes a minimal API (`get_app_config`, `get_pubkey`). 
 
 ## Prerequisites
 
@@ -65,16 +65,10 @@ make delete
 
 ## Example of Ledger wallet functionality
 
-Non-interactive public key query:
+Test functionality:
 
 ```bash
-python test_pubkey.py --account_number 12345
-```
-
-Interactive message signing:
-
-```bash
-python test_sign.py --account_number 12345
+python test_example.py --account_number 12345
 ```
 
 ## Documentation
